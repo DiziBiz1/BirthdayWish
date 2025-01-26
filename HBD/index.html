@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Ishu!!</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: black;
+      overflow: hidden;
+    }
+
+    @keyframes backgroundColorChange {
+      0% { background-color: #ffd1dc; }
+      25% { background-color: #e5b0ff; }
+      50% { background-color: #ff9999; }
+      75% { background-color: #b3e0ff; }
+      100% { background-color: #ffd1dc; }
+    }
+
+    @keyframes floatEffect {
+      0% { transform: translate(-50%, -50%) translateY(0) rotate(0deg); }
+      25% { transform: translate(-50%, -50%) translateY(-20px) rotate(5deg); }
+      50% { transform: translate(-50%, -50%) translateY(15px) rotate(-5deg); }
+      75% { transform: translate(-50%, -50%) translateY(-10px) rotate(3deg); }
+      100% { transform: translate(-50%, -50%) translateY(0) rotate(0deg); }
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateX(-50%) translateY(100vh); opacity: 0; }
+      100% { transform: translateX(-50%) translateY(-10%); opacity: 1; }
+    }
+
+    button {
+      position: absolute;
+      bottom: 5%;
+      z-index: 10;
+      padding: 15px 30px;
+      font-size: 20px;
+      color: white;
+      background-color: #5a54c9;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #ba1e7c;
+      transform: scale(1.1);
+    }
+
+    button:active {
+      transform: scale(1);
+    }
+
+    .image-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      opacity: 0;
+      transition: opacity 8s ease;
+    }
+
+    .image-container img {
+      width: 5%;
+      max-width: 100px;
+      position: absolute;
+    }
+
+    .banner {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0; /* Hidden initially */
+      width: 350px; /* Slightly larger */
+      animation: none;
+    }
+
+    .balloon-border {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      animation: none;
+      width: 1500px; /* Adjust size */
+    }
+
+    @keyframes fadeInAndAnimate {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+      }
+    }
+
+    /* Dialogue Box Styles */
+    .dialogue-box {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 50%;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+      overflow-y: auto;
+      font-size: 18px;
+      white-space: pre-wrap;
+    }
+
+  </style>
+</head>
+<body>
+  <button id="fadeButton">Turn ON lights</button>
+  
+  <div class="image-container" id="imageContainer">
+    <img src="image1.png" alt="Image 1">
+    <img src="image2.png" alt="Image 2">
+    <img src="image3.png" alt="Image 3">
+    <img src="image4.png" alt="Image 4">
+    <img src="image5.png" alt="Image 5">
+    <img src="image6.png" alt="Image 6">
+  </div>
+
+  <audio id="audioFile" src="hbd.mp3"></audio>
+  <img src="banner.png" alt="Banner" class="banner" id="bannerImage">
+  <img src="Balloon-Border.png" alt="Balloon Border" class="balloon-border" id="balloonBorder">
+
+  <!-- Dialogue Box -->
+  <div class="dialogue-box" id="dialogueBox"></div>
+
+  <script>
+    const button = document.getElementById('fadeButton');
+    const audio = document.getElementById('audioFile');
+    const imageContainer = document.getElementById('imageContainer');
+    const bannerImage = document.getElementById('bannerImage');
+    const balloonBorder = document.getElementById('balloonBorder');
+    const dialogueBox = document.getElementById('dialogueBox');
+    const images = document.querySelectorAll('.image-container img');
+    let step = 0;
+    let isBirthdayClicked = false;  // Track if "Happy Birthday Ishu!!" has been clicked
+
+    button.addEventListener('click', () => {
+      if (isBirthdayClicked) return; // Prevent repeating if birthday button is clicked
+
+      if (step === 0) {
+        // Turn on lights and fade in images
+        document.body.style.animation = 'backgroundColorChange 8s infinite';
+        imageContainer.style.opacity = '1';
+        startImageShuffle();
+        button.textContent = 'Music';
+        step++;
+      } else if (step === 1) {
+        // Play music
+        if (audio.paused) {
+          audio.play();
+          button.textContent = 'Decorations';
+          step++;
+        }
+      } else if (step === 2) {
+        // Show and float the banner with enhanced animation
+        bannerImage.style.opacity = '1'; // Make visible
+        bannerImage.style.animation = 'fadeInAndAnimate 2s ease forwards, floatEffect 4s ease-in-out infinite';
+
+        // Show and animate the Balloon-Border
+        balloonBorder.style.opacity = '1';
+        balloonBorder.style.animation = 'floatUp 6s ease-in-out forwards';
+        
+        setTimeout(() => {
+          bannerImage.style.animation = 'none'; // Stop floating after the animation ends
+          balloonBorder.style.animation = 'none'; // Stop Balloon Border after finishing
+          button.textContent = 'Happy Birthday Ishu!!'; // Change button text to Happy Birthday
+          step++; // Prevent the decorations process from repeating
+        }, 6000);
+      } else if (step === 3) {
+        // Hide the banner and show the dialogue box
+        bannerImage.style.display = 'none';  // Hide the banner
+        dialogueBox.style.display = 'block'; // Show the dialogue box
+
+        // Start typing animation for the message
+        const message = `Happy Birthday Ishu!! 🎉\n\nI hope this year brings you lots of joy, success, and wonderful memories. You've always been such an amazing person, and I'm truly grateful to have you in my life. May all your dreams and aspirations come true. Here's to a year filled with happiness, laughter, and love!\n\nBest wishes for the year ahead.\n\nEnjoy your special day to the fullest! \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non ultricies lacus, at fringilla turpis. Proin vitae libero nibh. Curabitur at augue at ligula tincidunt malesuada sed in sem. Ut sollicitudin interdum velit, at vehicula nunc facilisis et. Integer lobortis, libero non consequat auctor, est dolor blandit erat, quis cursus erat enim sed arcu. Aenean iaculis, libero eget sollicitudin ullamcorper, libero risus accumsan libero, vel mollis lorem nulla quis urna. Curabitur eget eros sit amet turpis bibendum luctus at a turpis. Aliquam at libero at ipsum ullamcorper interdum. Pellentesque malesuada ante ut tincidunt scelerisque. Suspendisse potenti. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+
+Vestibulum condimentum sapien libero, sit amet facilisis quam congue nec. Praesent eget leo ut ligula ornare dignissim in et sem. Ut euismod magna ac ante sollicitudin, ut tempor quam facilisis. Sed suscipit, nulla ut facilisis ullamcorper, libero eros interdum ipsum, a suscipit justo ex non arcu. Vivamus pellentesque, mauris a pellentesque suscipit, urna odio vestibulum ipsum, non eleifend metus lorem at lorem. Integer malesuada aliquam tristique. Curabitur gravida arcu at libero molestie, sit amet convallis ex mollis. Sed in urna a lorem venenatis finibus. Sed eu ipsum vulputate, elementum nulla id, mollis velit. Nunc fringilla, augue eu egestas mollis, justo augue varius arcu, eu aliquet nunc velit non sapien. Aliquam erat volutpat. Integer faucibus sapien id orci cursus, a varius lectus aliquet. Vestibulum blandit velit felis, a mollis dui ultricies et. Pellentesque malesuada, nisl id laoreet viverra, dolor risus consectetur lacus, vel dignissim tortor risus quis libero.
+
+Ut auctor nulla a magna consectetur, ac pulvinar mi bibendum. Vestibulum auctor, ligula nec facilisis posuere, velit ex scelerisque erat, sit amet interdum libero enim ut justo. Aliquam erat volutpat. Nam malesuada nibh nec mi egestas, a egestas nulla vestibulum. Integer id felis ac felis bibendum vulputate at a velit. Cras ut orci at sapien pharetra iaculis. Nulla facilisi. Cras malesuada augue eros, at vehicula mauris interdum sit amet. Suspendisse potenti. Ut et orci nec justo blandit tincidunt. Donec euismod maximus magna, in tincidunt tortor eleifend a. Mauris in tempor nulla.
+
+Duis vehicula orci magna, et feugiat purus rhoncus et. Ut consectetur ex id enim vulputate, id tincidunt risus facilisis. Curabitur rutrum urna id vestibulum dictum. Integer porta consequat ex vel tincidunt. Donec elementum felis metus, at faucibus libero sollicitudin nec. Nam accumsan est eu erat sagittis, sit amet consectetur erat luctus. Duis a sem vestibulum, condimentum massa vel, pellentesque sapien. Vivamus et elit vel risus aliquet elementum. Aliquam egestas lorem eget tellus consectetur, id elementum lorem aliquet. Sed pellentesque augue quis tortor vehicula, non suscipit odio lacinia. Aenean et nunc suscipit, cursus felis at, tempus justo. Fusce suscipit felis in felis vehicula, ut auctor sem faucibus. Vivamus sed ipsum non purus mollis dapibus sed et mauris.
+`;
+        typeMessage(message);
+        
+        isBirthdayClicked = true; // Flag that the birthday button has been clicked
+      }
+    });
+
+    function startImageShuffle() {
+      const positions = [
+        { left: '15%', top: '1%' },
+        { left: '30%', top: '3%' },
+        { left: '45%', top: '3.5%' },
+        { left: '60%', top: '3.5%' },
+        { left: '75%', top: '3%' },
+        { left: '90%', top: '1%' }
+      ];
+
+      let index = 0;
+      setInterval(() => {
+        images.forEach((image, i) => {
+          const position = positions[(i + index) % positions.length];
+          image.style.left = position.left;
+          image.style.top = position.top;
+        });
+        index++;
+      }, 1000);
+    }
+
+    function typeMessage(message) {
+      let i = 0;
+      const typingSpeed = 50; // ms per character
+      function type() {
+        if (i < message.length) {
+          dialogueBox.textContent += message.charAt(i);
+          i++;
+          setTimeout(type, typingSpeed);
+        }
+      }
+      type();
+    }
+  </script>
+</body>
+</html>
